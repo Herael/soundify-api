@@ -75,4 +75,44 @@ router.post('/signup', async function(req, res){
   });
 });
 
+
+
+/**
+ * @POST | Connect User
+ *
+ * @Route("/signin")
+ */
+router.post('/signin', async (req, res) => {
+  const client = new MongoClient(MONGODB_URI);
+  const email = req.body.email;
+  const password = req.body.password;
+
+  client.connect()
+      .then(async function(response){
+
+          const db = client.db(MONGODB_DBNAME);
+          const userInDb = await db.collection(MONGODB_COLLEC).find({ email: email,
+              password: md5(password) }).toArray();
+          if(userInDb.length === 0){
+              res.status(400).send({
+                  error: 'Cet identifiant est inconnu'
+              });
+          } else {
+            res.status(200).send({
+              error: null,
+              _id: ObjectId(userInDb[0]._id),
+              firstname: userInDb[0].firstname,
+              lastname: userInDb[0].lastname,
+              email: userInDb[0].email,
+            });
+          }
+          client.close();
+      }).catch(function(error){
+      res.status(500).send({
+          error: error
+      });
+  });
+});
+
+
 module.exports = router;
