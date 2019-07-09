@@ -62,8 +62,11 @@ router.post('/signup', async function(req, res){
               await db.collection(MONGODB_COLLEC).insertOne(newUser);
               const userInDb = await db.collection(MONGODB_COLLEC).find({ email: email}).toArray();
               res.status(200).send({
-                  token: userInDb,
-                  error: null
+                error: null,
+                _id: ObjectId(userInDb[0]._id),
+                firstname: userInDb[0].firstname,
+                lastname: userInDb[0].lastname,
+                email: userInDb[0].email,
               });
           }
           client.close();
