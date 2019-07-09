@@ -2,7 +2,7 @@
  * MongoDB URI
  * Link for database access
  */
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27018/soundify-api';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/soundify-api';
 
 const MONGO_BASE_URL = process.env.MONGO_BASE_URL || 'mongodb://localhost:27017/soundify-api/';
 
